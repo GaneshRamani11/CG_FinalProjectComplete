@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<title>Computer Graphics Project </title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif;
+	font-family: cursive;}
+.w3-row-padding img {margin-bottom: 12px}
+/* Set the width of the sidebar to 120px */
+.w3-sidebar {width: 120px;background: #222;}
+/* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
+#main {margin-left: 120px}
+</style>
+<body class="w3-black">
+
+<!-- Icon Bar (Sidebar - hidden on small screens) -->
+<nav class="w3-sidebar w3-bar-block w3-small w3-hide-small w3-center">
+ <a href="/Main_Page.html" class="w3-bar-item w3-button w3-padding-large w3-black">
+    <i class="fa fa-home w3-xxlarge"></i>
+    <p>HOME</p>
+  </a>
+  <a href="Cube_with_GUI.html" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-book w3-xxlarge"></i>
+    <p> Cube With GUI </p>
+  </a>
+  <a href="Sphere_with_GUI.html" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-book w3-xxlarge"></i>
+    <p>Sphere With GUI </p>
+  </a>
+  <a href="Cylinder_withGUI.html" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-book w3-xxlarge"></i>
+    <p>Cylinder With GUI</p>
+  </a>
+	<a href="Cone_withGUI.html" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-book w3-xxlarge"></i>
+    <p>Cone With GUI </p>
+  </a>
+	<a href="Animation-1.html" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-book w3-xxlarge"></i>
+    <p> Plane Geometry And Animation</p>
+  </a>
+	  </a>
+	<a href="texturecube.html" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-book w3-xxlarge"></i>
+    <p> Texture Mapped  Cube </p>
+  </a>
+	  </a>
+	<a href="Texture.html" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-book w3-xxlarge"></i>
+    <p> Texture Mapped  Sphere </p>
+  </a>
+	<a href="Bump.html" class="w3-bar-item w3-button w3-padding-large w3-hover-black">
+    <i class="fa fa-book w3-xxlarge"></i>
+    <p> Texture and Bump Mapped  Sphere</p>
+  </a>
+</nav>
+<!-- Page Content -->
+<div class="w3-padding-large" id="main">
+  <!-- Header/Home -->
+ <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
+    <h2> Computer Graphics 1 </h2>
+  </header>
+<body onload="drawCone();">
+
+</div>
+
+<div id="main">
+
+<div class="w3-black">
+
+    <h1>Project Submission - 3</h1>
+  </div>
+</div>
+
+<div class="w3-container">
+
+</div>
+
+	
+</div>
+<script src="http://threejs.org/build/three.min.js"></script>
+<script src="TrackballControls.js"></script>
+<script src="OrbitControls.js"></script>
+	<script src="dat.gui.js"></script>
+<script>
+function w3_open() {
+  document.getElementById("main").style.marginLeft = "25%";
+  document.getElementById("mySidebar").style.width = "25%";
+  document.getElementById("mySidebar").style.display = "block";
+  document.getElementById("openNav").style.display = 'none';
+}
+function w3_close() {
+  document.getElementById("main").style.marginLeft = "0%";
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("openNav").style.display = "inline-block";
+}
+</script>
+	<script>
+	function drawCone(){
+   var camera, scene, renderer;
+var geometry, material, mesh;
+
+init();
+animate();
+
+
+function addDatGui(){
+ options = {
+  velx: 0.01,
+  vely: 0,
+  camera: {
+    speed: 0.0001
+  }
+};
+
+var gui = new dat.GUI();
+	
+
+var cam = gui.addFolder('Camera');
+cam.add(camera.position, 'x', -1000, 1000).listen();
+cam.add(camera.position, 'y', -1000, 1000).listen();
+cam.add(camera.position, 'z', -1000, 1000).listen();
+cam.open();
+
+var box = gui.addFolder('Cone');
+box.add(Cone.scale, 'x', 0, 100).name('Width').listen();
+box.add(Cone.scale, 'y', 0, 100).name('Height').listen();
+box.add(Cone.material, 'wireframe').listen();
+box.open();
+
+var speed= gui.addFolder('Speed');
+model= speed.add(Cone.rotation,'x',0,0.2).name('X-Axis').listen();
+	speed.open();
+	
+	model.onChange(animate);
+}
+function init() {
+
+    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+    camera.position.z = 1000;
+
+    scene = new THREE.Scene();
+
+    geometry = new THREE.ConeGeometry( 200, 200, 200 );
+    material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
+
+    Cone = new THREE.Mesh( geometry, material );
+    scene.add( Cone );
+
+    renderer = new THREE.WebGLRenderer({});
+    renderer.setSize( window.innerWidth, window.innerHeight );
+
+    document.body.appendChild( renderer.domElement );
+    
+    addDatGui();
+
+}
+
+function animate() {
+
+    
+    requestAnimationFrame( animate );
+
+   Cone.rotation.x = options.velx;
+    Cone.rotation.y = options.velx;
+
+    renderer.render( scene, camera );
+
+}
+
+}
+	</script>
+
+</body>
+</html>
+
+
+

@@ -1,1 +1,2 @@
-# CG_FinalProjectComplete
+# Final_project
+Final Project Submission 1

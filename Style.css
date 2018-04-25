@@ -1,0 +1,38 @@
+a{
+    font-family: cursive;
+}
+button{
+    font-family: cursive;
+    text-emphasis-color: red;
+}
+h1{
+    font-family: cursive;
+    text-align: center;
+}
+p{
+    font-family: cursive;
+    text-align: center;
+}
+li{
+    font-family: cursive;
+    padding-left: 30%;
+}
+#Note{
+    color: red;
+    text-decoration: underline;
+    text-decoration-color: red;
+    text-align: center;
+}
+input{
+	font-family: cursive;
+	width: 50px;
+}
+body{
+	font-family: cursive;
+    align-items: inherit;
+}
+button{
+    align-items: center;
+    padding: 40px;
+
+}

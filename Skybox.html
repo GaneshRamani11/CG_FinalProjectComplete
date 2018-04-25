@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		img{
+			width: 100px;
+			image-resolution: snap;
+		}
+	</style>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="Style.css">
+</head>
+<body onload="Skybox()">
+
+<div id="main">
+
+    <div class="w3-black">
+      <button id="openNav" class="w3-button w3-black w3-xlarge" onclick="w3_open()">&#9776;</button>
+        <div class="w3-container">
+            <h1>SKYBOX BLOOD VALLEY</h1>
+        </div>
+    </div>
+
+<img src="blood-valley_bk.png">Blood Valley
+	<img src="blood-valley_dn.png"> Water Valley
+
+
+</div>
+
+
+
+<script src="http://threejs.org/build/three.min.js"></script>
+<script src="OrbitControls.js"></script>
+<script>
+    function w3_open() {
+        document.getElementById("main").style.marginLeft = "25%";
+        document.getElementById("mySidebar").style.width = "25%";
+        document.getElementById("mySidebar").style.display = "block";
+        document.getElementById("openNav").style.display = 'none';
+    }
+    function w3_close() {
+        document.getElementById("main").style.marginLeft = "0%";
+        document.getElementById("mySidebar").style.display = "none";
+        document.getElementById("openNav").style.display = "inline-block";
+    }
+</script>
+<script>
+	function Skybox(){
+		
+		var scene,camera,renderer,geometry,materials;
+		init();
+		render();
+		
+		function init(){
+			
+		  scene = new THREE.Scene();
+		  camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+		  camera.position.z=30	;
+		  renderer = new THREE.WebGLRenderer({antialias: true});
+          renderer.setSize( window.innerWidth, window.innerHeight );
+		  document.body.appendChild( renderer.domElement );
+	      geometry = new THREE.CubeGeometry( 100, 100, 100 );
+          material = [
+		    new THREE.MeshBasicMaterial( { map: new THREE.TextureLoader().load("blood-valley_ft.png"),side:THREE.DoubleSide } ),
+		    new THREE.MeshBasicMaterial( { map: new THREE.TextureLoader().load("blood-valley_bk.png"),side:THREE.DoubleSide } ),
+		    new THREE.MeshBasicMaterial( { map: new THREE.TextureLoader().load("blood-valley_up.png"),side:THREE.DoubleSide } ),
+		    new THREE.MeshBasicMaterial( { map: new THREE.TextureLoader().load("blood-valley_dn.png"),side:THREE.DoubleSide } ),
+	     	new THREE.MeshBasicMaterial( { map: new THREE.TextureLoader().load("blood-valley_rt.png"),side:THREE.DoubleSide } ),
+	    	new THREE.MeshBasicMaterial( { map: new THREE.TextureLoader().load("blood-valley_lf.png"),side:THREE.DoubleSide } ),
+		];
+		
+          material1 =new THREE.MeshFaceMaterial(material);
+          cube = new THREE.Mesh( geometry, material1 );
+          scene.add( cube );
+			
+
+		  cubegeometry = new THREE.SphereGeometry(10,20,40);
+		  mirrorCubeCamera = new THREE.CubeCamera( 0.1, 5000, 512 );
+		  material2 = new THREE.MeshBasicMaterial({envMap: mirrorCubeCamera.renderTarget,reflectivity:1});
+		  cube1 = new THREE.Mesh( cubegeometry, material2 );
+		  scene.add(cube1);				
+		  cube1.position.set(1,0,0);
+			
+			light= new THREE.AmbientLight(0xFFFFFF, 0.3);
+			scene.add(light);
+		
+		 controls = new THREE.OrbitControls( camera, renderer.domElement );
+				
+				controls.target.set( 0, 10, 0 );
+				controls.minDistance = 40.0;
+				controls.maxDistance = 200.0;
+				camera.lookAt( controls.target );
+			
+		}
+		
+		
+		function render() {
+      requestAnimationFrame(render);
+      mirrorCubeCamera.update( renderer, scene );
+			cube1.rotation.x +=0.01;
+			cube1.rotation.y +=0.01;
+			cube1.rotation.z +=0.01;
+			cube.rotation.y +=0.01;
+      renderer.render(scene, camera); 
+        }
+			
+		
+	}
+	
+	
+	
+	
+	
+	
+	</script>
+
+</body>
+</html>
